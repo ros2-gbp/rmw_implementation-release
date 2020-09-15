@@ -15,6 +15,10 @@ License:        @(License)
 Source0:        %{name}-%{version}.tar.gz
 @[if NoArch]@\nBuildArch:      noarch@\n@[end if]@
 
+Requires:       ros-eloquent-rmw-implementation-packages(member)
+%if 0%{?with_weak_deps}
+Suggests:       ros-eloquent-rmw-cyclonedds-cpp
+%endif
 @[for p in Depends]Requires:       @p@\n@[end for]@
 @[for p in BuildDepends]BuildRequires:  @p@\n@[end for]@
 @[for p in Conflicts]Conflicts:      @p@\n@[end for]@
