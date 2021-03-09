@@ -15,6 +15,11 @@ License:        @(License)
 Source0:        %{name}-%{version}.tar.gz
 @[if NoArch]@\nBuildArch:      noarch@\n@[end if]@
 
+Requires:       ros-@(Rosdistro)-rmw-implementation-packages(member)
+%if 0%{?with_weak_deps}
+Recommends:     ros-@(Rosdistro)-rmw-cyclonedds-cpp
+%endif
+
 @[for p in Depends]Requires:       @p@\n@[end for]@
 @[for p in BuildDepends]BuildRequires:  @p@\n@[end for]@
 @[for p in Conflicts]Conflicts:      @p@\n@[end for]@
