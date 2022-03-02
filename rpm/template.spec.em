@@ -21,7 +21,7 @@ Source0:        %{name}-%{version}.tar.gz
 
 Requires:       ros-@(Rosdistro)-rmw-implementation-packages(member)
 %if 0%{?with_weak_deps}
-Recommends:     ros-@(Rosdistro)-rmw-cyclonedds-cpp
+Recommends:     ros-@(Rosdistro)-rmw-fastrtps-cpp
 %endif
 
 @[for p in Depends]Requires:       @p@\n@[end for]@
