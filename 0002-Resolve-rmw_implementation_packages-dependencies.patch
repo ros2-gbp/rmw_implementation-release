@@ -1,4 +1,4 @@
-From 349c799a86cab6d5e55c9864c4944f92134044b6 Mon Sep 17 00:00:00 2001
+From a662163b6b0bd72125f14c0b2a9a930173857a66 Mon Sep 17 00:00:00 2001
 From: Scott K Logan <logans@cottsay.net>
 Date: Tue, 9 Mar 2021 15:57:20 -0800
 Subject: [PATCH 2/2] Resolve rmw_implementation_packages dependencies
@@ -12,10 +12,10 @@ Signed-off-by: Scott K Logan <logans@cottsay.net>
  1 file changed, 5 insertions(+)
 
 diff --git a/rpm/template.spec.em b/rpm/template.spec.em
-index 6a4dbdd..ed4be23 100644
+index 7755dbc..ae85612 100644
 --- a/rpm/template.spec.em
 +++ b/rpm/template.spec.em
-@@ -21,6 +21,11 @@ License:        @(License)
+@@ -19,6 +19,11 @@ License:        @(License)
  Source0:        %{name}-%{version}.tar.gz
  @[if NoArch]@\nBuildArch:      noarch@\n@[end if]@
  
