@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.5)
 
 project(rmw_implementation)
 
-# Default to C++14
+# Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -12,6 +13,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(rmw REQUIRED)
 find_package(rmw_implementation_cmake REQUIRED)
 
 if(BUILD_TESTING)
@@ -80,12 +82,12 @@ else()
   if(BUILD_TESTING)
     find_package(ament_cmake_gtest REQUIRED)
     ament_add_gtest(test_functions test/test_functions.cpp)
-    ament_target_dependencies(test_functions rcutils rmw)
     target_link_libraries(test_functions
       ${PROJECT_NAME}
-      ament_index_cpp::ament_index_cpp
       rcpputils::rcpputils
-      rcutils::rcutils)
+      rcutils::rcutils
+      rmw::rmw
+    )
 
     find_package(performance_test_fixture REQUIRED)
     # Give cppcheck hints about macro definitions coming from outside this package

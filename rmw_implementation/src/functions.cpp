@@ -647,6 +647,21 @@ RMW_INTERFACE_FN(
   3, ARG_TYPES(const rmw_node_t *, const char *, size_t *))
 
 RMW_INTERFACE_FN(
+  rmw_count_clients,
+  rmw_ret_t, RMW_RET_ERROR,
+  3, ARG_TYPES(const rmw_node_t *, const char *, size_t *))
+
+RMW_INTERFACE_FN(
+  rmw_count_services,
+  rmw_ret_t, RMW_RET_ERROR,
+  3, ARG_TYPES(const rmw_node_t *, const char *, size_t *))
+
+RMW_INTERFACE_FN(
+  rmw_get_gid_for_client,
+  rmw_ret_t, RMW_RET_ERROR,
+  2, ARG_TYPES(const rmw_client_t *, rmw_gid_t *))
+
+RMW_INTERFACE_FN(
   rmw_get_gid_for_publisher,
   rmw_ret_t, RMW_RET_ERROR,
   2, ARG_TYPES(const rmw_publisher_t *, rmw_gid_t *))
@@ -742,6 +757,38 @@ RMW_INTERFACE_FN(
   1, ARG_TYPES(
     rmw_feature_t))
 
+RMW_INTERFACE_FN(
+  rmw_event_type_is_supported,
+  bool, false,
+  1, ARG_TYPES(
+    rmw_event_type_t))
+
+RMW_INTERFACE_FN(
+  rmw_take_dynamic_message,
+  rmw_ret_t, RMW_RET_ERROR,
+  4, ARG_TYPES(
+    const rmw_subscription_t *,
+    rosidl_dynamic_typesupport_dynamic_data_t *,
+    bool *,
+    rmw_subscription_allocation_t *))
+
+RMW_INTERFACE_FN(
+  rmw_take_dynamic_message_with_info,
+  rmw_ret_t, RMW_RET_ERROR,
+  5, ARG_TYPES(
+    const rmw_subscription_t *,
+    rosidl_dynamic_typesupport_dynamic_data_t *,
+    bool *,
+    rmw_message_info_t *,
+    rmw_subscription_allocation_t *))
+
+RMW_INTERFACE_FN(
+  rmw_serialization_support_init,
+  rmw_ret_t, RMW_RET_ERROR,
+  3, ARG_TYPES(
+    const char *, rcutils_allocator_t *, rosidl_dynamic_typesupport_serialization_support_t *))
+
+
 #define GET_SYMBOL(x) symbol_ ## x = get_symbol(#x);
 
 void prefetch_symbols(void)
@@ -800,6 +847,7 @@ void prefetch_symbols(void)
   GET_SYMBOL(rmw_take_request)
   GET_SYMBOL(rmw_send_response)
   GET_SYMBOL(rmw_take_event)
+  GET_SYMBOL(rmw_event_type_is_supported)
   GET_SYMBOL(rmw_create_guard_condition)
   GET_SYMBOL(rmw_destroy_guard_condition)
   GET_SYMBOL(rmw_trigger_guard_condition)
@@ -816,6 +864,9 @@ void prefetch_symbols(void)
   GET_SYMBOL(rmw_get_node_names_with_enclaves)
   GET_SYMBOL(rmw_count_publishers)
   GET_SYMBOL(rmw_count_subscribers)
+  GET_SYMBOL(rmw_count_clients)
+  GET_SYMBOL(rmw_count_services)
+  GET_SYMBOL(rmw_get_gid_for_client)
   GET_SYMBOL(rmw_get_gid_for_publisher)
   GET_SYMBOL(rmw_compare_gids_equal)
   GET_SYMBOL(rmw_service_response_publisher_get_actual_qos)
@@ -834,6 +885,9 @@ void prefetch_symbols(void)
   GET_SYMBOL(rmw_client_set_on_new_response_callback)
   GET_SYMBOL(rmw_event_set_callback)
   GET_SYMBOL(rmw_feature_supported)
+  GET_SYMBOL(rmw_take_dynamic_message)
+  GET_SYMBOL(rmw_take_dynamic_message_with_info)
+  GET_SYMBOL(rmw_serialization_support_init)
 }
 
 void * symbol_rmw_init = nullptr;
@@ -934,6 +988,9 @@ unload_library()
   symbol_rmw_get_node_names_with_enclaves = nullptr;
   symbol_rmw_count_publishers = nullptr;
   symbol_rmw_count_subscribers = nullptr;
+  symbol_rmw_count_clients = nullptr;
+  symbol_rmw_count_services = nullptr;
+  symbol_rmw_get_gid_for_client = nullptr;
   symbol_rmw_get_gid_for_publisher = nullptr;
   symbol_rmw_compare_gids_equal = nullptr;
   symbol_rmw_service_server_is_available = nullptr;
@@ -949,5 +1006,9 @@ unload_library()
   symbol_rmw_client_set_on_new_response_callback = nullptr;
   symbol_rmw_event_set_callback = nullptr;
   symbol_rmw_feature_supported = nullptr;
+  symbol_rmw_event_type_is_supported = nullptr;
+  symbol_rmw_take_dynamic_message = nullptr;
+  symbol_rmw_take_dynamic_message_with_info = nullptr;
+  symbol_rmw_serialization_support_init = nullptr;
   g_rmw_lib.reset();
 }

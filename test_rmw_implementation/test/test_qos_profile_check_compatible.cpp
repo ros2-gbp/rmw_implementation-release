@@ -14,16 +14,10 @@
 
 #include <gtest/gtest.h>
 
+#include "rmw/error_handling.h"
 #include "rmw/qos_profiles.h"
 
-#ifdef RMW_IMPLEMENTATION
-# define CLASSNAME_(NAME, SUFFIX) NAME ## __ ## SUFFIX
-# define CLASSNAME(NAME, SUFFIX) CLASSNAME_(NAME, SUFFIX)
-#else
-# define CLASSNAME(NAME, SUFFIX) NAME
-#endif
-
-TEST(CLASSNAME(TestQoSProfilesAreCompatible, RMW_IMPLEMENTATION), compatible) {
+TEST(TestQoSProfilesAreCompatible, compatible) {
   // A profile without system default or unknown values should be compatible with itself
   rmw_qos_profile_t qos = {
     RMW_QOS_POLICY_HISTORY_KEEP_LAST,
@@ -44,12 +38,13 @@ TEST(CLASSNAME(TestQoSProfilesAreCompatible, RMW_IMPLEMENTATION), compatible) {
   EXPECT_EQ(compatible, RMW_QOS_COMPATIBILITY_OK);
 }
 
-TEST(CLASSNAME(TestQoSProfilesAreCompatible, RMW_IMPLEMENTATION), invalid_input) {
+TEST(TestQoSProfilesAreCompatible, invalid_input) {
   // Error on null 'compatible' parameter
   {
     rmw_ret_t ret = rmw_qos_profile_check_compatible(
       rmw_qos_profile_sensor_data, rmw_qos_profile_sensor_data, nullptr, nullptr, 0u);
     EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT);
+    rmw_reset_error();
   }
   // Error on null reason and non-zero size
   {
@@ -57,5 +52,6 @@ TEST(CLASSNAME(TestQoSProfilesAreCompatible, RMW_IMPLEMENTATION), invalid_input)
     rmw_ret_t ret = rmw_qos_profile_check_compatible(
       rmw_qos_profile_sensor_data, rmw_qos_profile_sensor_data, &compatible, nullptr, 1u);
     EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT);
+    rmw_reset_error();
   }
 }

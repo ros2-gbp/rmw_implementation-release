@@ -24,22 +24,17 @@
 #include "./config.hpp"
 #include "./testing_macros.hpp"
 
-#ifdef RMW_IMPLEMENTATION
-# define CLASSNAME_(NAME, SUFFIX) NAME ## __ ## SUFFIX
-# define CLASSNAME(NAME, SUFFIX) CLASSNAME_(NAME, SUFFIX)
-#else
-# define CLASSNAME(NAME, SUFFIX) NAME
-#endif
-
-class CLASSNAME (TestDurationInfinite, RMW_IMPLEMENTATION) : public ::testing::Test
+class TestDurationInfinite : public ::testing::Test
 {
 protected:
   void SetUp() override
   {
+    rcutils_allocator_t allocator = rcutils_get_default_allocator();
     init_options = rmw_get_zero_initialized_init_options();
-    rmw_ret_t ret = rmw_init_options_init(&init_options, rcutils_get_default_allocator());
+    rmw_ret_t ret = rmw_init_options_init(&init_options, allocator);
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
-    init_options.enclave = rcutils_strdup("/", rcutils_get_default_allocator());
+    ret = rmw_enclave_options_copy("/", &allocator, &init_options.enclave);
+    ASSERT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
     ASSERT_STREQ("/", init_options.enclave);
     context = rmw_get_zero_initialized_context();
     ret = rmw_init(&init_options, &context);
@@ -67,7 +62,7 @@ protected:
   rmw_node_t * node;
 };
 
-TEST_F(CLASSNAME(TestDurationInfinite, RMW_IMPLEMENTATION), create_publisher)
+TEST_F(TestDurationInfinite, create_publisher)
 {
   rmw_ret_t ret = RMW_RET_ERROR;
   size_t match_count = 0;

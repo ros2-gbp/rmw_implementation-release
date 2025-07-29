@@ -27,27 +27,22 @@
 #include "test_msgs/msg/basic_types.h"
 #include "test_msgs/srv/basic_types.h"
 
-#ifdef RMW_IMPLEMENTATION
-# define CLASSNAME_(NAME, SUFFIX) NAME ## __ ## SUFFIX
-# define CLASSNAME(NAME, SUFFIX) CLASSNAME_(NAME, SUFFIX)
-#else
-# define CLASSNAME(NAME, SUFFIX) NAME
-#endif
-
-class CLASSNAME (TestWaitSet, RMW_IMPLEMENTATION) : public ::testing::Test
+class TestWaitSet : public ::testing::Test
 {
 protected:
   void SetUp() override
   {
+    rcutils_allocator_t allocator = rcutils_get_default_allocator();
     rmw_init_options_t options = rmw_get_zero_initialized_init_options();
-    rmw_ret_t ret = rmw_init_options_init(&options, rcutils_get_default_allocator());
+    rmw_ret_t ret = rmw_init_options_init(&options, allocator);
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
     OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
     {
       rmw_ret_t ret = rmw_init_options_fini(&options);
       EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
     });
-    options.enclave = rcutils_strdup("/", rcutils_get_default_allocator());
+    ret = rmw_enclave_options_copy("/", &allocator, &options.enclave);
+    ASSERT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
     ASSERT_STREQ("/", options.enclave);
     context = rmw_get_zero_initialized_context();
     ret = rmw_init(&options, &context);
@@ -65,7 +60,7 @@ protected:
   rmw_context_t context;
 };
 
-TEST_F(CLASSNAME(TestWaitSet, RMW_IMPLEMENTATION), rmw_create_wait_set)
+TEST_F(TestWaitSet, rmw_create_wait_set)
 {
   // Created a valid wait_set
   rmw_wait_set_t * wait_set = rmw_create_wait_set(&context, 0);
@@ -98,15 +93,12 @@ TEST_F(CLASSNAME(TestWaitSet, RMW_IMPLEMENTATION), rmw_create_wait_set)
   });
 }
 
-class CLASSNAME (TestWaitSetUse, RMW_IMPLEMENTATION)
-  : public CLASSNAME(TestWaitSet, RMW_IMPLEMENTATION)
+class TestWaitSetUse : public TestWaitSet
 {
 protected:
-  using Base = CLASSNAME(TestWaitSet, RMW_IMPLEMENTATION);
-
   void SetUp() override
   {
-    Base::SetUp();
+    TestWaitSet::SetUp();
     constexpr char node_name[] = "my_node";
     constexpr char node_namespace[] = "/my_ns";
     node = rmw_create_node(&context, node_name, node_namespace);
@@ -127,7 +119,12 @@ protected:
     ASSERT_NE(nullptr, srv) << rmw_get_error_string().str;
     client = rmw_create_client(node, service_ts, service_name, &rmw_qos_profile_default);
     ASSERT_NE(nullptr, client) << rmw_get_error_string().str;
-    rmw_ret_t ret = rmw_subscription_event_init(&event, sub, RMW_EVENT_LIVELINESS_CHANGED);
+    rmw_ret_t ret = RMW_RET_OK;
+    if (!rmw_event_type_is_supported(RMW_EVENT_LIVELINESS_CHANGED)) {
+      ret = rmw_subscription_event_init(&event, sub, RMW_EVENT_PUBLICATION_MATCHED);
+    } else {
+      ret = rmw_subscription_event_init(&event, sub, RMW_EVENT_LIVELINESS_CHANGED);
+    }
     ASSERT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
   }
 
@@ -145,7 +142,7 @@ protected:
     EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
     ret = rmw_destroy_node(node);
     EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
-    Base::TearDown();
+    TestWaitSet::TearDown();
   }
 
   rmw_node_t * node{nullptr};
@@ -163,7 +160,7 @@ protected:
   var_name.internal_var_name ## s = var_name ## _storage; \
   var_name.internal_var_name ## _count = size;
 
-TEST_F(CLASSNAME(TestWaitSetUse, RMW_IMPLEMENTATION), rmw_wait)
+TEST_F(TestWaitSetUse, rmw_wait)
 {
   constexpr size_t number_of_subscriptions = 1u;
   constexpr size_t number_of_guard_conditions = 1u;
@@ -390,11 +387,11 @@ TEST_F(CLASSNAME(TestWaitSetUse, RMW_IMPLEMENTATION), rmw_wait)
   });
 }
 
-TEST_F(CLASSNAME(TestWaitSet, RMW_IMPLEMENTATION), rmw_destroy_wait_set)
+TEST_F(TestWaitSet, rmw_destroy_wait_set)
 {
   // Try to destroy a nullptr
   rmw_ret_t ret = rmw_destroy_wait_set(nullptr);
-  EXPECT_EQ(ret, RMW_RET_ERROR) << rcutils_get_error_string().str;
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << rcutils_get_error_string().str;
   rmw_reset_error();
 
   // Created a valid wait set

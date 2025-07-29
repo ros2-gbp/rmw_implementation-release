@@ -34,23 +34,18 @@
 
 #include "rmw_dds_common/gid_utils.hpp"
 
-#ifdef RMW_IMPLEMENTATION
-# define CLASSNAME_(NAME, SUFFIX) NAME ## __ ## SUFFIX
-# define CLASSNAME(NAME, SUFFIX) CLASSNAME_(NAME, SUFFIX)
-#else
-# define CLASSNAME(NAME, SUFFIX) NAME
-#endif
-
 using rmw_dds_common::operator==;
 
-class CLASSNAME (TestSubscription, RMW_IMPLEMENTATION) : public ::testing::Test
+class TestSubscription : public ::testing::Test
 {
 protected:
   void SetUp() override
   {
-    rmw_ret_t ret = rmw_init_options_init(&init_options, rcutils_get_default_allocator());
+    rcutils_allocator_t allocator = rcutils_get_default_allocator();
+    rmw_ret_t ret = rmw_init_options_init(&init_options, allocator);
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
-    init_options.enclave = rcutils_strdup("/", rcutils_get_default_allocator());
+    ret = rmw_enclave_options_copy("/", &allocator, &init_options.enclave);
+    ASSERT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
     ASSERT_STREQ("/", init_options.enclave);
     ret = rmw_init(&init_options, &context);
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
@@ -77,7 +72,7 @@ protected:
   rmw_node_t * node{nullptr};
 };
 
-TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), create_and_destroy) {
+TEST_F(TestSubscription, create_and_destroy) {
   rmw_subscription_options_t options = rmw_get_default_subscription_options();
   constexpr char topic_name[] = "/test";
   const rosidl_message_type_support_t * ts =
@@ -89,7 +84,7 @@ TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), create_and_destroy) {
   EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
 }
 
-TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), create_and_destroy_native) {
+TEST_F(TestSubscription, create_and_destroy_native) {
   rmw_subscription_options_t options = rmw_get_default_subscription_options();
   constexpr char topic_name[] = "test";
   const rosidl_message_type_support_t * ts =
@@ -103,7 +98,7 @@ TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), create_and_destroy_nativ
   EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
 }
 
-TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), create_with_bad_arguments) {
+TEST_F(TestSubscription, create_with_bad_arguments) {
   rmw_subscription_options_t options = rmw_get_default_subscription_options();
   constexpr char topic_name[] = "/test";
   const rosidl_message_type_support_t * ts =
@@ -173,7 +168,7 @@ TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), create_with_bad_argument
   EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
 }
 
-TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), create_with_internal_errors) {
+TEST_F(TestSubscription, create_with_internal_errors) {
   constexpr char topic_name[] = "/test";
   const rosidl_message_type_support_t * ts =
     ROSIDL_GET_MSG_TYPE_SUPPORT(test_msgs, msg, BasicTypes);
@@ -195,7 +190,7 @@ TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), create_with_internal_err
   });
 }
 
-TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), destroy_with_bad_arguments) {
+TEST_F(TestSubscription, destroy_with_bad_arguments) {
   rmw_subscription_options_t options = rmw_get_default_subscription_options();
   constexpr char topic_name[] = "/test";
   const rosidl_message_type_support_t * ts =
@@ -226,7 +221,7 @@ TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), destroy_with_bad_argumen
   rmw_reset_error();
 }
 
-TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), destroy_with_internal_errors) {
+TEST_F(TestSubscription, destroy_with_internal_errors) {
   constexpr char topic_name[] = "/test";
   const rosidl_message_type_support_t * ts =
     ROSIDL_GET_MSG_TYPE_SUPPORT(test_msgs, msg, BasicTypes);
@@ -246,7 +241,7 @@ TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), destroy_with_internal_er
   });
 }
 
-TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), get_actual_qos_from_system_defaults) {
+TEST_F(TestSubscription, get_actual_qos_from_system_defaults) {
   rmw_subscription_options_t options = rmw_get_default_subscription_options();
   constexpr char topic_name[] = "/test";
   const rosidl_message_type_support_t * ts =
@@ -272,15 +267,12 @@ TEST_F(CLASSNAME(TestSubscription, RMW_IMPLEMENTATION), get_actual_qos_from_syst
   EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
 }
 
-class CLASSNAME (TestSubscriptionUse, RMW_IMPLEMENTATION)
-  : public CLASSNAME(TestSubscription, RMW_IMPLEMENTATION)
+class TestSubscriptionUse : public TestSubscription
 {
 protected:
-  using Base = CLASSNAME(TestSubscription, RMW_IMPLEMENTATION);
-
   void SetUp() override
   {
-    Base::SetUp();
+    TestSubscription::SetUp();
     // Tighten QoS policies to force mismatch.
     qos_profile.reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
     rmw_subscription_options_t options = rmw_get_default_subscription_options();
@@ -292,7 +284,7 @@ protected:
   {
     rmw_ret_t ret = rmw_destroy_subscription(node, sub);
     EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
-    Base::TearDown();
+    TestSubscription::TearDown();
   }
 
   rmw_subscription_t * sub{nullptr};
@@ -302,7 +294,7 @@ protected:
   rmw_qos_profile_t qos_profile{rmw_qos_profile_default};
 };
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), get_actual_qos_with_bad_arguments) {
+TEST_F(TestSubscriptionUse, get_actual_qos_with_bad_arguments) {
   rmw_qos_profile_t actual_qos_profile = rmw_qos_profile_unknown;
   rmw_ret_t ret = rmw_subscription_get_actual_qos(nullptr, &actual_qos_profile);
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
@@ -320,7 +312,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), get_actual_qos_with_b
   sub->implementation_identifier = implementation_identifier;
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), get_actual_qos) {
+TEST_F(TestSubscriptionUse, get_actual_qos) {
   rmw_qos_profile_t actual_qos_profile = rmw_qos_profile_unknown;
   rmw_ret_t ret = rmw_subscription_get_actual_qos(sub, &actual_qos_profile);
   EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
@@ -330,7 +322,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), get_actual_qos) {
   EXPECT_EQ(qos_profile.durability, actual_qos_profile.durability);
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), count_matched_publishers_with_bad_args) {
+TEST_F(TestSubscriptionUse, count_matched_publishers_with_bad_args) {
   size_t publisher_count = 0u;
   rmw_ret_t ret = rmw_subscription_count_matched_publishers(nullptr, &publisher_count);
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
@@ -348,7 +340,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), count_matched_publish
   rmw_reset_error();
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), count_matched_subscriptions) {
+TEST_F(TestSubscriptionUse, count_matched_subscriptions) {
   osrf_testing_tools_cpp::memory_tools::ScopedQuickstartGtest sqg;
 
   rmw_ret_t ret;
@@ -398,7 +390,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), count_matched_subscri
   EXPECT_EQ(0u, publisher_count);
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), count_mismatched_subscriptions) {
+TEST_F(TestSubscriptionUse, count_mismatched_subscriptions) {
   osrf_testing_tools_cpp::memory_tools::ScopedQuickstartGtest sqg;
 
   rmw_ret_t ret;
@@ -418,6 +410,14 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), count_mismatched_subs
     rmw_create_publisher(node, ts, topic_name, &other_qos_profile, &options);
   ASSERT_NE(nullptr, pub) << rmw_get_error_string().str;
 
+  // For DDS-based middlewares, the QoS defined above might result in a mismatch while it might not
+  // for other middlewares. Hence, we rely on rmw_qos_profile_check_compatible to infer whether
+  // the publisher and subscription will match and accordingly evaluate match counts.
+  rmw_qos_compatibility_type_t compat;
+  rmw_ret_t rmw_ret =
+    rmw_qos_profile_check_compatible(qos_profile, other_qos_profile, &compat, nullptr, 0);
+  ASSERT_EQ(rmw_ret, RMW_RET_OK);
+
   // TODO(hidmic): revisit when https://github.com/ros2/rmw/issues/264 is resolved.
   SLEEP_AND_RETRY_UNTIL(rmw_intraprocess_discovery_delay, rmw_intraprocess_discovery_delay * 10) {
     ret = rmw_subscription_count_matched_publishers(sub, &publisher_count);
@@ -431,7 +431,11 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), count_mismatched_subs
     ret = rmw_subscription_count_matched_publishers(sub, &publisher_count);
   });
   EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
-  EXPECT_EQ(0u, publisher_count);
+  if (compat == RMW_QOS_COMPATIBILITY_OK) {
+    EXPECT_EQ(1u, publisher_count);
+  } else {
+    EXPECT_EQ(0u, publisher_count);
+  }
 
   ret = rmw_destroy_publisher(node, pub);
   EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
@@ -444,7 +448,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), count_mismatched_subs
   EXPECT_EQ(0u, publisher_count);
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_with_bad_args) {
+TEST_F(TestSubscriptionUse, take_with_bad_args) {
   bool taken = false;
   test_msgs__msg__BasicTypes output_message{};
   output_message.bool_value = true;
@@ -479,7 +483,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_with_bad_args) {
   sub->implementation_identifier = implementation_identifier;
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_with_info_with_bad_args) {
+TEST_F(TestSubscriptionUse, take_with_info_with_bad_args) {
   bool taken = false;
   test_msgs__msg__BasicTypes output_message{};
   output_message.bool_value = true;
@@ -528,7 +532,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_with_info_with_b
   sub->implementation_identifier = implementation_identifier;
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), ignore_local_publications) {
+TEST_F(TestSubscriptionUse, ignore_local_publications) {
   rmw_ret_t ret;
   bool taken = false;
 
@@ -629,7 +633,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), ignore_local_publicat
   }
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), ignore_local_publications_serialized) {
+TEST_F(TestSubscriptionUse, ignore_local_publications_serialized) {
   rmw_ret_t ret;
 
   // Create publisher
@@ -737,7 +741,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), ignore_local_publicat
   }
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_sequence) {
+TEST_F(TestSubscriptionUse, take_sequence) {
   size_t count = 1u;
   size_t taken = 10u;  // Non-zero value to check variable update
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
@@ -768,7 +772,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_sequence) {
   test_msgs__msg__Strings__Sequence__destroy(seq);
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_sequence_with_bad_args) {
+TEST_F(TestSubscriptionUse, take_sequence_with_bad_args) {
   size_t count = 1u;
   size_t taken = 0u;
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
@@ -878,7 +882,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_sequence_with_ba
   EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_serialized_with_bad_args) {
+TEST_F(TestSubscriptionUse, take_serialized_with_bad_args) {
   rmw_subscription_allocation_t * null_allocation{nullptr};  // still valid allocation
   rcutils_allocator_t default_allocator = rcutils_get_default_allocator();
   bool taken = false;
@@ -933,9 +937,7 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), take_serialized_with_
     RMW_RET_OK, rmw_serialized_message_fini(&original_message)) << rmw_get_error_string().str;
 }
 
-TEST_F(
-  CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION),
-  take_serialized_with_info_with_bad_args) {
+TEST_F(TestSubscriptionUse, take_serialized_with_info_with_bad_args) {
   rmw_subscription_allocation_t * null_allocation{nullptr};  // still valid allocation
   rcutils_allocator_t default_allocator = rcutils_get_default_allocator();
   bool taken = false;
@@ -982,14 +984,14 @@ TEST_F(
     RMW_RET_OK, rmw_serialized_message_fini(&serialized_message)) << rmw_get_error_string().str;
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), no_content_filter_get) {
+TEST_F(TestSubscriptionUse, no_content_filter_get) {
   rmw_subscription_content_filter_options_t options;
   auto allocator = rcutils_get_default_allocator();
   rmw_ret_t ret = rmw_subscription_get_content_filter(sub, &allocator, &options);
   EXPECT_NE(RMW_RET_OK, ret);
 }
 
-TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), no_content_filter_set) {
+TEST_F(TestSubscriptionUse, no_content_filter_set) {
   rmw_ret_t ret;
   bool taken = false;
 
@@ -1121,15 +1123,12 @@ TEST_F(CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION), no_content_filter_set
   }
 }
 
-class CLASSNAME (TestSubscriptionUseLoan, RMW_IMPLEMENTATION)
-  : public CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION)
+class TestSubscriptionUseLoan : public TestSubscriptionUse
 {
 protected:
-  using Base = CLASSNAME(TestSubscriptionUse, RMW_IMPLEMENTATION);
-
   void SetUp() override
   {
-    Base::SetUp();
+    TestSubscriptionUse::SetUp();
     // Check if loaning is supported by the implementation
     if (!sub->can_loan_messages) {
       bool taken = false;
@@ -1155,11 +1154,11 @@ protected:
 
   void TearDown() override
   {
-    Base::TearDown();
+    TestSubscriptionUse::TearDown();
   }
 };
 
-TEST_F(CLASSNAME(TestSubscriptionUseLoan, RMW_IMPLEMENTATION), rmw_take_loaned_message) {
+TEST_F(TestSubscriptionUseLoan, rmw_take_loaned_message) {
   bool taken = false;
   void * loaned_message = nullptr;
   rmw_subscription_allocation_t * null_allocation{nullptr};  // still valid allocation
@@ -1195,7 +1194,7 @@ TEST_F(CLASSNAME(TestSubscriptionUseLoan, RMW_IMPLEMENTATION), rmw_take_loaned_m
 }
 
 TEST_F(
-  CLASSNAME(TestSubscriptionUseLoan, RMW_IMPLEMENTATION), rmw_take_loaned_message_with_info) {
+  TestSubscriptionUseLoan, rmw_take_loaned_message_with_info) {
   bool taken = false;
   void * loaned_message = nullptr;
   rmw_message_info_t message_info = rmw_get_zero_initialized_message_info();
@@ -1243,9 +1242,7 @@ TEST_F(
   sub->implementation_identifier = implementation_identifier;
 }
 
-TEST_F(
-  CLASSNAME(TestSubscriptionUseLoan, RMW_IMPLEMENTATION),
-  rmw_return_loaned_message_from_subscription) {
+TEST_F(TestSubscriptionUseLoan, rmw_return_loaned_message_from_subscription) {
   test_msgs__msg__BasicTypes msg{};
   rmw_ret_t ret = rmw_return_loaned_message_from_subscription(nullptr, &msg);
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, ret) << rmw_get_error_string().str;
@@ -1293,15 +1290,12 @@ bool operator==(const rmw_message_info_t & m1, const rmw_message_info_t & m2)
          m1.from_intra_process == m2.from_intra_process;
 }
 
-class CLASSNAME (TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION)
-  : public CLASSNAME(TestSubscription, RMW_IMPLEMENTATION)
+class TestContentFilterSubscriptionUse : public TestSubscription
 {
 protected:
-  using Base = CLASSNAME(TestSubscription, RMW_IMPLEMENTATION);
-
   void SetUp() override
   {
-    Base::SetUp();
+    TestSubscription::SetUp();
     // Tighten QoS policies to force mismatch.
     qos_profile.reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
     rmw_subscription_options_t options = rmw_get_default_subscription_options();
@@ -1342,7 +1336,7 @@ protected:
   {
     rmw_ret_t ret = rmw_destroy_subscription(node, sub);
     EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
-    Base::TearDown();
+    TestSubscription::TearDown();
   }
 
   rmw_subscription_t * sub{nullptr};
@@ -1360,7 +1354,7 @@ protected:
   };
 };
 
-TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), get_content_filter) {
+TEST_F(TestContentFilterSubscriptionUse, get_content_filter) {
   rmw_subscription_content_filter_options_t options;
   auto allocator = rcutils_get_default_allocator();
   rmw_ret_t ret = rmw_subscription_get_content_filter(sub, &allocator, &options);
@@ -1381,7 +1375,7 @@ TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), get_cont
   }
 }
 
-TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), set_content_filter) {
+TEST_F(TestContentFilterSubscriptionUse, set_content_filter) {
   rmw_subscription_content_filter_options_t options =
     rmw_get_zero_initialized_content_filter_options();
   auto allocator = rcutils_get_default_allocator();
@@ -1408,7 +1402,7 @@ TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), set_cont
   }
 }
 
-TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), content_filter_get_begin) {
+TEST_F(TestContentFilterSubscriptionUse, content_filter_get_begin) {
   rmw_ret_t ret;
   bool taken = false;
 
@@ -1544,7 +1538,7 @@ TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), content_
   }
 }
 
-TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), content_filter_get_later) {
+TEST_F(TestContentFilterSubscriptionUse, content_filter_get_later) {
   rmw_ret_t ret;
   bool taken = false;
 
@@ -1690,7 +1684,7 @@ TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), content_
   }
 }
 
-TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), content_filter_reset) {
+TEST_F(TestContentFilterSubscriptionUse, content_filter_reset) {
   rmw_ret_t ret;
   bool taken = false;
 
@@ -1836,9 +1830,7 @@ TEST_F(CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION), content_
   }
 }
 
-TEST_F(
-  CLASSNAME(TestContentFilterSubscriptionUse, RMW_IMPLEMENTATION),
-  create_two_filters_with_same_topic_name_and_destroy) {
+TEST_F(TestContentFilterSubscriptionUse, create_two_filters_with_same_topic_name_and_destroy) {
   if (sub->is_cft_enabled) {
     auto allocator = rcutils_get_default_allocator();
     rmw_subscription_options_t options = rmw_get_default_subscription_options();

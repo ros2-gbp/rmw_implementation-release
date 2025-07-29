@@ -2,20 +2,95 @@
 Changelog for package test_rmw_implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.8.5 (2025-07-16)
+3.1.2 (2025-07-29)
 ------------------
-* add ignore_local_publications_serialized test. (backport `#255 <https://github.com/ros2/rmw_implementation/issues/255>`_) (`#258 <https://github.com/ros2/rmw_implementation/issues/258>`_)
-* Contributors: mergify[bot]
+* Test failing deserialization of invalid sequence length (`#261 <https://github.com/ros2/rmw_implementation/issues/261>`_)
+* Contributors: Miguel Company
 
-2.8.4 (2024-07-26)
+3.1.1 (2025-07-01)
 ------------------
-* Add test creating two content filter topics with the same topic name … (backport `#233 <https://github.com/ros2/rmw_implementation/issues/233>`_) (`#236 <https://github.com/ros2/rmw_implementation/issues/236>`_)
-* Contributors: mergify[bot]
+* add ignore_local_publications_serialized test. (`#255 <https://github.com/ros2/rmw_implementation/issues/255>`_)
+* Contributors: Tomoya Fujita
 
-2.8.3 (2024-05-15)
+3.1.0 (2025-04-25)
 ------------------
 
-2.8.2 (2023-01-10)
+3.0.4 (2025-03-11)
+------------------
+* Added rmw_event_type_is_supported (`#250 <https://github.com/ros2/rmw_implementation/issues/250>`_)
+  * Added rmw_event_check_compatible
+  * fix return typoe
+  * updated name and use in wait_set test
+  ---------
+* Update expectations of tests to remain compatible with non-DDS middlewares (`#248 <https://github.com/ros2/rmw_implementation/issues/248>`_)
+* use rmw_enclave_options_xxx APIs instead. (`#247 <https://github.com/ros2/rmw_implementation/issues/247>`_)
+* Fix up some overwritten errors. (`#246 <https://github.com/ros2/rmw_implementation/issues/246>`_)
+  That is, make sure to clear out errors where we should.
+  We also slightly rewrite some of the testing around
+  unsupported APIs, so that they make more sense.
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Tomoya Fujita, yadunund
+
+3.0.3 (2024-11-20)
+------------------
+
+3.0.2 (2024-10-03)
+------------------
+* Do not deref msg ptr for rmw\_{publish,return}_loaned_message*() (`#240 <https://github.com/ros2/rmw_implementation/issues/240>`_)
+* Contributors: Christophe Bedard
+
+3.0.1 (2024-07-29)
+------------------
+* remove rmw_localhost_only_t. (`#239 <https://github.com/ros2/rmw_implementation/issues/239>`_)
+* Contributors: Tomoya Fujita
+
+3.0.0 (2024-06-17)
+------------------
+* Expect rmw_service_server_is_available to ret RMW_RET_INVALID_ARGUMENT (`#231 <https://github.com/ros2/rmw_implementation/issues/231>`_)
+* Expect rmw_destroy_wait_set to ret RMW_RET_INVALID_ARGUMENT (`#234 <https://github.com/ros2/rmw_implementation/issues/234>`_)
+* Add test creating two content filter topics with the same topic name (`#230 <https://github.com/ros2/rmw_implementation/issues/230>`_) (`#233 <https://github.com/ros2/rmw_implementation/issues/233>`_)
+* Contributors: Alejandro Hernández Cordero, Christophe Bedard
+
+2.16.0 (2024-04-26)
+-------------------
+
+2.15.1 (2024-03-28)
+-------------------
+* Compile the test_rmw_implementation tests fewer times. (`#224 <https://github.com/ros2/rmw_implementation/issues/224>`_)
+* Contributors: Chris Lalancette
+
+2.15.0 (2023-12-26)
+-------------------
+* Switch to using target_link_libraries everywhere. (`#222 <https://github.com/ros2/rmw_implementation/issues/222>`_)
+* Contributors: Chris Lalancette
+
+2.14.0 (2023-10-04)
+-------------------
+* Add rmw_count_clients,services & test (`#208 <https://github.com/ros2/rmw_implementation/issues/208>`_)
+* Contributors: Minju, Lee
+
+2.13.0 (2023-04-27)
+-------------------
+
+2.12.0 (2023-04-11)
+-------------------
+* Add tests for rmw matched event (`#216 <https://github.com/ros2/rmw_implementation/issues/216>`_)
+* Contributors: Barry Xu
+
+2.11.0 (2023-02-13)
+-------------------
+* Update rmw_implementation to C++17. (`#214 <https://github.com/ros2/rmw_implementation/issues/214>`_)
+* [rolling] Update maintainers - 2022-11-07 (`#212 <https://github.com/ros2/rmw_implementation/issues/212>`_)
+* Contributors: Audrow Nash, Chris Lalancette
+
+2.10.0 (2022-11-02)
+-------------------
+* Add rmw_get_gid_for_client & tests (`#206 <https://github.com/ros2/rmw_implementation/issues/206>`_)
+* Contributors: Brian
+
+2.9.1 (2022-09-13)
+------------------
+
+2.9.0 (2022-04-29)
 ------------------
 
 2.8.1 (2022-03-28)

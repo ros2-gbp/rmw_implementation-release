@@ -2,21 +2,83 @@
 Changelog for package rmw_implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.8.5 (2025-07-16)
+3.1.2 (2025-07-29)
 ------------------
 
-2.8.4 (2024-07-26)
+3.1.1 (2025-07-01)
+------------------
+* Fixed windows warning (`#254 <https://github.com/ros2/rmw_implementation/issues/254>`_)
+* Contributors: Alejandro Hernández Cordero
+
+3.1.0 (2025-04-25)
 ------------------
 
-2.8.3 (2024-05-15)
+3.0.4 (2025-03-11)
 ------------------
-* Update quality declaration document (`#225 <https://github.com/ros2/rmw_implementation/issues/225>`_) (`#228 <https://github.com/ros2/rmw_implementation/issues/228>`_)
-* Contributors: mergify[bot]
+* Added rmw_event_type_is_supported (`#250 <https://github.com/ros2/rmw_implementation/issues/250>`_)
+* Contributors: Alejandro Hernández Cordero
 
-2.8.2 (2023-01-10)
+3.0.3 (2024-11-20)
 ------------------
-* Build-time RMW selection does not need ament_index_cpp (`#210 <https://github.com/ros2/rmw_implementation/issues/210>`_) (`#211 <https://github.com/ros2/rmw_implementation/issues/211>`_)
-* Contributors: mergify[bot]
+* Make sure to find_package(rmw) in rmw_implementation. (`#242 <https://github.com/ros2/rmw_implementation/issues/242>`_)
+* Contributors: Chris Lalancette
+
+3.0.2 (2024-10-03)
+------------------
+
+3.0.1 (2024-07-29)
+------------------
+
+3.0.0 (2024-06-17)
+------------------
+* Add mechanism to disable workaround for dependency groups (`#229 <https://github.com/ros2/rmw_implementation/issues/229>`_)
+* Contributors: Scott K Logan
+
+2.16.0 (2024-04-26)
+-------------------
+* Update quality declaration document (`#225 <https://github.com/ros2/rmw_implementation/issues/225>`_)
+* Contributors: Christophe Bedard
+
+2.15.1 (2024-03-28)
+-------------------
+
+2.15.0 (2023-12-26)
+-------------------
+* Switch to using target_link_libraries everywhere. (`#222 <https://github.com/ros2/rmw_implementation/issues/222>`_)
+* Contributors: Chris Lalancette
+
+2.14.0 (2023-10-04)
+-------------------
+* Add rmw_count_clients,services & test (`#208 <https://github.com/ros2/rmw_implementation/issues/208>`_)
+* Contributors: Minju, Lee
+
+2.13.0 (2023-04-27)
+-------------------
+
+2.12.0 (2023-04-11)
+-------------------
+* Dynamic Subscription (BONUS: Allocators): rmw_implementation (`#219 <https://github.com/ros2/rmw_implementation/issues/219>`_)
+* Runtime Interface Reflection: rmw_implementation (`#215 <https://github.com/ros2/rmw_implementation/issues/215>`_)
+* Mark the benchmark _ variables as unused. (`#218 <https://github.com/ros2/rmw_implementation/issues/218>`_)
+* Contributors: Chris Lalancette, methylDragon
+
+2.11.0 (2023-02-13)
+-------------------
+* Update rmw_implementation to C++17. (`#214 <https://github.com/ros2/rmw_implementation/issues/214>`_)
+* [rolling] Update maintainers - 2022-11-07 (`#212 <https://github.com/ros2/rmw_implementation/issues/212>`_)
+* Build-time RMW selection does not need ament_index_cpp (`#210 <https://github.com/ros2/rmw_implementation/issues/210>`_)
+* Contributors: Audrow Nash, Chris Lalancette, G.A. vd. Hoorn
+
+2.10.0 (2022-11-02)
+-------------------
+* Add rmw_get_gid_for_client & tests (`#206 <https://github.com/ros2/rmw_implementation/issues/206>`_)
+* Contributors: Brian
+
+2.9.1 (2022-09-13)
+------------------
+
+2.9.0 (2022-04-29)
+------------------
 
 2.8.1 (2022-03-28)
 ------------------
