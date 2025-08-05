@@ -2,55 +2,37 @@
 Changelog for package test_rmw_implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-3.1.2 (2025-07-29)
-------------------
-* Test failing deserialization of invalid sequence length (`#261 <https://github.com/ros2/rmw_implementation/issues/261>`_)
-* Contributors: Miguel Company
-
-3.1.1 (2025-07-01)
-------------------
-* add ignore_local_publications_serialized test. (`#255 <https://github.com/ros2/rmw_implementation/issues/255>`_)
-* Contributors: Tomoya Fujita
-
-3.1.0 (2025-04-25)
-------------------
-
-3.0.4 (2025-03-11)
-------------------
-* Added rmw_event_type_is_supported (`#250 <https://github.com/ros2/rmw_implementation/issues/250>`_)
-  * Added rmw_event_check_compatible
-  * fix return typoe
-  * updated name and use in wait_set test
+2.15.6 (2025-08-05)
+-------------------
+* Test failing deserialization of invalid sequence length (`#261 <https://github.com/ros2/rmw_implementation/issues/261>`_) (`#263 <https://github.com/ros2/rmw_implementation/issues/263>`_)
+  * Add test infrastructure.
+  * Test that deserialization with wrong sequence length fails.
   ---------
-* Update expectations of tests to remain compatible with non-DDS middlewares (`#248 <https://github.com/ros2/rmw_implementation/issues/248>`_)
-* use rmw_enclave_options_xxx APIs instead. (`#247 <https://github.com/ros2/rmw_implementation/issues/247>`_)
-* Fix up some overwritten errors. (`#246 <https://github.com/ros2/rmw_implementation/issues/246>`_)
-  That is, make sure to clear out errors where we should.
-  We also slightly rewrite some of the testing around
-  unsupported APIs, so that they make more sense.
-* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Tomoya Fujita, yadunund
+  (cherry picked from commit 4dd5d571a5bfa1a67183acf271dfa442932c7572)
+  Co-authored-by: Miguel Company <miguelcompany@eprosima.com>
+* add ignore_local_publications_serialized test. (`#255 <https://github.com/ros2/rmw_implementation/issues/255>`_) (`#257 <https://github.com/ros2/rmw_implementation/issues/257>`_)
+  (cherry picked from commit 1eceed45fbdbe6b93bb49993f1bed9698aeca38f)
+  Co-authored-by: Tomoya Fujita <Tomoya.Fujita@sony.com>
+* Contributors: mergify[bot]
 
-3.0.3 (2024-11-20)
-------------------
+2.15.5 (2025-03-12)
+-------------------
+* Added rmw_event_type_is_supported (`#250 <https://github.com/ros2/rmw_implementation/issues/250>`_) (`#252 <https://github.com/ros2/rmw_implementation/issues/252>`_)
+* Update expectations of tests to remain compatible with non-DDS middlewares (`#248 <https://github.com/ros2/rmw_implementation/issues/248>`_) (`#251 <https://github.com/ros2/rmw_implementation/issues/251>`_)
+* Contributors: Alejandro Hernández Cordero, mergify[bot]
 
-3.0.2 (2024-10-03)
-------------------
-* Do not deref msg ptr for rmw\_{publish,return}_loaned_message*() (`#240 <https://github.com/ros2/rmw_implementation/issues/240>`_)
-* Contributors: Christophe Bedard
+2.15.4 (2024-12-18)
+-------------------
 
-3.0.1 (2024-07-29)
-------------------
-* remove rmw_localhost_only_t. (`#239 <https://github.com/ros2/rmw_implementation/issues/239>`_)
-* Contributors: Tomoya Fujita
+2.15.3 (2024-06-27)
+-------------------
+* Add test creating two content filter topics with the same topic name (`#230 <https://github.com/ros2/rmw_implementation/issues/230>`_) (`#233 <https://github.com/ros2/rmw_implementation/issues/233>`_) (`#237 <https://github.com/ros2/rmw_implementation/issues/237>`_)
+  Co-authored-by: Mario Domínguez López <116071334+Mario-DL@users.noreply.github.com>
+  (cherry picked from commit 16e14d15e210672fbfe0beb1f57effbd8d1233b0)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Contributors: mergify[bot]
 
-3.0.0 (2024-06-17)
-------------------
-* Expect rmw_service_server_is_available to ret RMW_RET_INVALID_ARGUMENT (`#231 <https://github.com/ros2/rmw_implementation/issues/231>`_)
-* Expect rmw_destroy_wait_set to ret RMW_RET_INVALID_ARGUMENT (`#234 <https://github.com/ros2/rmw_implementation/issues/234>`_)
-* Add test creating two content filter topics with the same topic name (`#230 <https://github.com/ros2/rmw_implementation/issues/230>`_) (`#233 <https://github.com/ros2/rmw_implementation/issues/233>`_)
-* Contributors: Alejandro Hernández Cordero, Christophe Bedard
-
-2.16.0 (2024-04-26)
+2.15.2 (2024-04-24)
 -------------------
 
 2.15.1 (2024-03-28)

@@ -2,42 +2,34 @@
 Changelog for package rmw_implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-3.1.2 (2025-07-29)
-------------------
-
-3.1.1 (2025-07-01)
-------------------
-* Fixed windows warning (`#254 <https://github.com/ros2/rmw_implementation/issues/254>`_)
-* Contributors: Alejandro Hernández Cordero
-
-3.1.0 (2025-04-25)
-------------------
-
-3.0.4 (2025-03-11)
-------------------
-* Added rmw_event_type_is_supported (`#250 <https://github.com/ros2/rmw_implementation/issues/250>`_)
-* Contributors: Alejandro Hernández Cordero
-
-3.0.3 (2024-11-20)
-------------------
-* Make sure to find_package(rmw) in rmw_implementation. (`#242 <https://github.com/ros2/rmw_implementation/issues/242>`_)
-* Contributors: Chris Lalancette
-
-3.0.2 (2024-10-03)
-------------------
-
-3.0.1 (2024-07-29)
-------------------
-
-3.0.0 (2024-06-17)
-------------------
-* Add mechanism to disable workaround for dependency groups (`#229 <https://github.com/ros2/rmw_implementation/issues/229>`_)
-* Contributors: Scott K Logan
-
-2.16.0 (2024-04-26)
+2.15.6 (2025-08-05)
 -------------------
-* Update quality declaration document (`#225 <https://github.com/ros2/rmw_implementation/issues/225>`_)
-* Contributors: Christophe Bedard
+* Fixed windows warning (`#254 <https://github.com/ros2/rmw_implementation/issues/254>`_) (`#260 <https://github.com/ros2/rmw_implementation/issues/260>`_)
+  (cherry picked from commit 8c006087e3af66a79f61dbe0ff45e7a1ef31a686)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Contributors: mergify[bot]
+
+2.15.5 (2025-03-12)
+-------------------
+* Added rmw_event_type_is_supported (`#250 <https://github.com/ros2/rmw_implementation/issues/250>`_) (`#252 <https://github.com/ros2/rmw_implementation/issues/252>`_)
+* Contributors: Alejandro Hernández Cordero
+
+2.15.4 (2024-12-18)
+-------------------
+* Make sure to find_package(rmw) in rmw_implementation. (`#242 <https://github.com/ros2/rmw_implementation/issues/242>`_) (`#245 <https://github.com/ros2/rmw_implementation/issues/245>`_)
+  This is required to get access to the register_rmw_implementation
+  CMake macro.
+  (cherry picked from commit e9f60082b76e0621629c146d160b72bdac82ae45)
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* Contributors: mergify[bot]
+
+2.15.3 (2024-06-27)
+-------------------
+
+2.15.2 (2024-04-24)
+-------------------
+* Update quality declaration document (`#225 <https://github.com/ros2/rmw_implementation/issues/225>`_) (`#226 <https://github.com/ros2/rmw_implementation/issues/226>`_)
+* Contributors: mergify[bot]
 
 2.15.1 (2024-03-28)
 -------------------

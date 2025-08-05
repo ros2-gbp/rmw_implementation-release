@@ -31,12 +31,10 @@ class TestInitShutdown : public ::testing::Test
 protected:
   void SetUp() override
   {
-    rcutils_allocator_t allocator = rcutils_get_default_allocator();
     options = rmw_get_zero_initialized_init_options();
-    rmw_ret_t ret = rmw_init_options_init(&options, allocator);
+    rmw_ret_t ret = rmw_init_options_init(&options, rcutils_get_default_allocator());
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
-    ret = rmw_enclave_options_copy("/", &allocator, &options.enclave);
-    ASSERT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
+    options.enclave = rcutils_strdup("/", rcutils_get_default_allocator());
     ASSERT_STREQ("/", options.enclave);
   }
 

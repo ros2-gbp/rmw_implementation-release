@@ -34,12 +34,10 @@ class TestPublisher : public ::testing::Test
 protected:
   void SetUp() override
   {
-    rcutils_allocator_t allocator = rcutils_get_default_allocator();
     init_options = rmw_get_zero_initialized_init_options();
-    rmw_ret_t ret = rmw_init_options_init(&init_options, allocator);
+    rmw_ret_t ret = rmw_init_options_init(&init_options, rcutils_get_default_allocator());
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
-    ret = rmw_enclave_options_copy("/", &allocator, &init_options.enclave);
-    ASSERT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
+    init_options.enclave = rcutils_strdup("/", rcutils_get_default_allocator());
     ASSERT_STREQ("/", init_options.enclave);
     context = rmw_get_zero_initialized_context();
     ret = rmw_init(&init_options, &context);
@@ -551,11 +549,11 @@ protected:
       EXPECT_EQ(RMW_RET_UNSUPPORTED, ret) << rmw_get_error_string().str;
       rmw_reset_error();
       EXPECT_EQ(nullptr, msg_pointer);
-      ret = rmw_return_loaned_message_from_publisher(pub, msg_pointer);
+      ret = rmw_return_loaned_message_from_publisher(pub, &msg_pointer);
       EXPECT_EQ(RMW_RET_UNSUPPORTED, ret) << rmw_get_error_string().str;
       rmw_reset_error();
       EXPECT_EQ(nullptr, msg_pointer);
-      ret = rmw_publish_loaned_message(pub, msg_pointer, null_allocation);
+      ret = rmw_publish_loaned_message(pub, &msg_pointer, null_allocation);
       EXPECT_EQ(RMW_RET_UNSUPPORTED, ret) << rmw_get_error_string().str;
       rmw_reset_error();
       EXPECT_EQ(nullptr, msg_pointer);

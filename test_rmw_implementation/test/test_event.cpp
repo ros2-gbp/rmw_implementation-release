@@ -34,11 +34,9 @@ class TestEvent : public ::testing::Test
 protected:
   void SetUp() override
   {
-    rcutils_allocator_t allocator = rcutils_get_default_allocator();
-    rmw_ret_t ret = rmw_init_options_init(&init_options, allocator);
+    rmw_ret_t ret = rmw_init_options_init(&init_options, rcutils_get_default_allocator());
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
-    ret = rmw_enclave_options_copy("/", &allocator, &init_options.enclave);
-    ASSERT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
+    init_options.enclave = rcutils_strdup("/", rcutils_get_default_allocator());
     ASSERT_STREQ("/", init_options.enclave);
     ret = rmw_init(&init_options, &context);
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
