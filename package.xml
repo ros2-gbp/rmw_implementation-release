@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>rmw_implementation</name>
-  <version>2.15.5</version>
+  <version>2.15.6</version>
   <description>Proxy implementation of the ROS 2 Middleware Interface.</description>
 
   <maintainer email="william@openrobotics.org">William Woodall</maintainer>
@@ -25,6 +25,7 @@
   Bloom does not support group_depend so entries below duplicate the group rmw_implementation_packages.
   This ensures that binary packages have support for all of these rmw impl. enabled.
   -->
+  <build_depend>rmw_connextdds</build_depend>
   <build_depend>rmw_cyclonedds_cpp</build_depend>
   <build_depend>rmw_fastrtps_cpp</build_depend>
   <build_depend>rmw_fastrtps_dynamic_cpp</build_depend>
