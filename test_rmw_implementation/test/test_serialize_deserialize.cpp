@@ -362,8 +362,13 @@ TEST(TestSerializeDeserialize, bad_cdr_sequence_correctly_fails_for_cpp) {
 
 TEST(TestSerializeDeserialize, rmw_get_serialized_message_size)
 {
-  if (rmw_get_serialized_message_size(nullptr, nullptr, nullptr) != RMW_RET_UNSUPPORTED) {
-    // TODO(anyone): Add tests here when the implementation it's supported
+  rmw_ret_t ret = rmw_get_serialized_message_size(nullptr, nullptr, nullptr);
+  rmw_reset_error();
+  if (ret == RMW_RET_UNSUPPORTED) {
     GTEST_SKIP();
   }
+
+  ASSERT_NE(ret, RMW_RET_UNSUPPORTED);
+
+  // TODO(anyone): Add tests here when the API has been implemented
 }

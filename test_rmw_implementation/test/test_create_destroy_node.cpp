@@ -29,10 +29,12 @@ class TestNodeConstructionDestruction : public ::testing::Test
 protected:
   void SetUp() override
   {
+    rcutils_allocator_t allocator = rcutils_get_default_allocator();
     options = rmw_get_zero_initialized_init_options();
-    rmw_ret_t ret = rmw_init_options_init(&options, rcutils_get_default_allocator());
+    rmw_ret_t ret = rmw_init_options_init(&options, allocator);
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
-    options.enclave = rcutils_strdup("/", rcutils_get_default_allocator());
+    ret = rmw_enclave_options_copy("/", &allocator, &options.enclave);
+    ASSERT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
     ASSERT_STREQ("/", options.enclave);
     context = rmw_get_zero_initialized_context();
     ret = rmw_init(&options, &context);
@@ -133,12 +135,14 @@ class TestLocalhostNodeConstructionDestruction : public ::testing::Test
 protected:
   void SetUp() override
   {
+    rcutils_allocator_t allocator = rcutils_get_default_allocator();
     options = rmw_get_zero_initialized_init_options();
-    rmw_ret_t ret = rmw_init_options_init(&options, rcutils_get_default_allocator());
+    rmw_ret_t ret = rmw_init_options_init(&options, allocator);
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
-    options.enclave = rcutils_strdup("/", rcutils_get_default_allocator());
+    ret = rmw_enclave_options_copy("/", &allocator, &options.enclave);
+    ASSERT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
     ASSERT_STREQ("/", options.enclave);
-    options.localhost_only = RMW_LOCALHOST_ONLY_ENABLED;
+    options.discovery_options.automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_LOCALHOST;
     context = rmw_get_zero_initialized_context();
     ret = rmw_init(&options, &context);
     ASSERT_EQ(RMW_RET_OK, ret) << rcutils_get_error_string().str;
