@@ -1,0 +1,12 @@
+Source: ros-kilted-rmw-implementation
+Section: misc
+Priority: optional
+Maintainer: William Woodall <william@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ros-kilted-ament-cmake, ros-kilted-ament-cmake-gtest <!nocheck>, ros-kilted-ament-index-cpp, ros-kilted-ament-lint-auto <!nocheck>, ros-kilted-ament-lint-common <!nocheck>, ros-kilted-performance-test-fixture <!nocheck>, ros-kilted-rcpputils, ros-kilted-rcutils, ros-kilted-rmw, ros-kilted-rmw-connextdds, ros-kilted-rmw-cyclonedds-cpp, ros-kilted-rmw-fastrtps-cpp, ros-kilted-rmw-fastrtps-dynamic-cpp, ros-kilted-rmw-implementation-cmake, ros-kilted-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-kilted-rmw-implementation
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-kilted-ament-index-cpp, ros-kilted-rcpputils, ros-kilted-rcutils, ros-kilted-rmw-implementation-cmake, ros-kilted-ros-workspace, ros-kilted-rmw-fastrtps-cpp | ros-kilted-rmw-cyclonedds-cpp | ros-kilted-rmw-connextdds
+Description: Proxy implementation of the ROS 2 Middleware Interface.
