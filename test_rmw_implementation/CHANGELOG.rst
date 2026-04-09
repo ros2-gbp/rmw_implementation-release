@@ -2,15 +2,33 @@
 Changelog for package test_rmw_implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-3.0.6 (2025-12-23)
+3.1.5 (2026-04-09)
+------------------
+* Use new aggregate rosidl target instead of _TARGETS (`#276 <https://github.com/ros2/rmw_implementation/issues/276>`_)
+* test_rmw_implementation: add test isolation (`#275 <https://github.com/ros2/rmw_implementation/issues/275>`_)
+* Contributors: Alexis Tsogias, Julien Enoch
+
+3.1.4 (2025-12-23)
 ------------------
 
-3.0.5 (2025-11-18)
+3.1.3 (2025-11-18)
 ------------------
-* fix cmake deprecation (`#267 <https://github.com/ros2/rmw_implementation/issues/267>`_) (`#268 <https://github.com/ros2/rmw_implementation/issues/268>`_)
-* Test failing deserialization of invalid sequence length (`#261 <https://github.com/ros2/rmw_implementation/issues/261>`_) (`#262 <https://github.com/ros2/rmw_implementation/issues/262>`_)
-* add ignore_local_publications_serialized test. (`#255 <https://github.com/ros2/rmw_implementation/issues/255>`_) (`#256 <https://github.com/ros2/rmw_implementation/issues/256>`_)
-* Contributors: mergify[bot]
+* Add rmw_get_clients_info_by_service , rmw_servers_clients_info_by_service (`#238 <https://github.com/ros2/rmw_implementation/issues/238>`_)
+* fix cmake deprecation (`#267 <https://github.com/ros2/rmw_implementation/issues/267>`_)
+* Contributors: Minju, Lee, mosfet80
+
+3.1.2 (2025-07-29)
+------------------
+* Test failing deserialization of invalid sequence length (`#261 <https://github.com/ros2/rmw_implementation/issues/261>`_)
+* Contributors: Miguel Company
+
+3.1.1 (2025-07-01)
+------------------
+* add ignore_local_publications_serialized test. (`#255 <https://github.com/ros2/rmw_implementation/issues/255>`_)
+* Contributors: Tomoya Fujita
+
+3.1.0 (2025-04-25)
+------------------
 
 3.0.4 (2025-03-11)
 ------------------
