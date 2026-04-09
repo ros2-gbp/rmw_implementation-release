@@ -1,3 +1,29 @@
+## rmw_implementation (rolling) - 3.1.5-3
+
+The packages in the `rmw_implementation` repository were released into the `rolling` distro by running `/usr/bin/bloom-release --rosdistro rolling --track rolling rmw_implementation` on `Thu, 09 Apr 2026 09:46:28 -0000`
+
+The `rmw_implementation` package was released.
+
+These packages were explicitly ignored:
+- `test_rmw_implementation`
+
+Version of package(s) in repository `rmw_implementation`:
+
+- upstream repository: https://github.com/ros2/rmw_implementation.git
+- release repository: https://github.com/ros2-gbp/rmw_implementation-release.git
+- rosdistro version: `3.1.4-1`
+- old version: `3.1.5-2`
+- new version: `3.1.5-3`
+
+Versions of tools used:
+
+- bloom version: `0.13.0`
+- catkin_pkg version: `1.1.0`
+- rosdep version: `0.26.0`
+- rosdistro version: `1.0.1`
+- vcstools version: `0.1.42`
+
+
 ## rmw_implementation (rolling) - 3.1.5-2
 
 The packages in the `rmw_implementation` repository were released into the `rolling` distro by running `/usr/bin/bloom-release --rosdistro rolling --track rolling rmw_implementation` on `Thu, 09 Apr 2026 09:42:07 -0000`
