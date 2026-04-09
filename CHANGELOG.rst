@@ -2,6 +2,11 @@
 Changelog for package rmw_implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.1.5 (2026-04-09)
+------------------
+* Add rmw_zenoh_cpp as a build dependency (`#273 <https://github.com/ros2/rmw_implementation/issues/273>`_)
+* Contributors: Tony Najjar
+
 3.1.4 (2025-12-23)
 ------------------
 * Updated deprecated ament_index_cpp API (`#272 <https://github.com/ros2/rmw_implementation/issues/272>`_)
