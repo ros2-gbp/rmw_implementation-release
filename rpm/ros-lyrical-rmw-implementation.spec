@@ -1,6 +1,7 @@
 %{?!ros_distro:%global ros_distro lyrical}
 %global pkg_name rmw_implementation
 %global normalized_pkg_name %{lua:return (string.gsub(rpm.expand('%{pkg_name}'), '_', '-'))}
+%global _bloom_disable_groups 1
 
 Name:           ros-lyrical-rmw-implementation
 Version:        3.1.5
@@ -12,6 +13,11 @@ Source0:        %{name}-%{version}.tar.gz
 
 BuildRequires:  bloom-rpm-macros
 BuildRequires:  cmake
+
+# We need more than one RMW present to build this package
+# Choose the default and one other
+BuildRequires:  ros-%{ros_distro}(rmw_fastrtps_cpp)(devel)
+BuildRequires:  ros-%{ros_distro}(rmw_fastrtps_dynamic_cpp)(devel)
 
 %{?bloom_package}
 
@@ -25,6 +31,8 @@ Summary:        %{summary}
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       %{name}-runtime%{?_isa} = %{version}-%{release}
+Suggests:       ros-%{ros_distro}(rmw_fastrtps_cpp)(devel)
+Requires:       ros-%{ros_distro}(rmw_implementation_packages)(devel)(member)
 
 %description devel
 Proxy implementation of the ROS 2 Middleware Interface.
@@ -33,6 +41,8 @@ Proxy implementation of the ROS 2 Middleware Interface.
 %package runtime
 Release:        %{release}
 Summary:        %{summary}
+Suggests:       ros-%{ros_distro}(rmw_fastrtps_cpp)
+Requires:       ros-%{ros_distro}(rmw_implementation_packages)(member)
 
 %description runtime
 Proxy implementation of the ROS 2 Middleware Interface.
@@ -43,7 +53,7 @@ Proxy implementation of the ROS 2 Middleware Interface.
 
 
 %generate_buildrequires
-%bloom_buildrequires
+%bloom_buildrequires -g
 
 
 %build
