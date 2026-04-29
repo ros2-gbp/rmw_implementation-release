@@ -1,0 +1,12 @@
+Source: ros-lyrical-rmw-implementation
+Section: misc
+Priority: optional
+Maintainer: William Woodall <william@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ros-lyrical-ament-cmake, ros-lyrical-ament-cmake-gtest <!nocheck>, ros-lyrical-ament-index-cpp, ros-lyrical-ament-lint-auto <!nocheck>, ros-lyrical-ament-lint-common <!nocheck>, ros-lyrical-performance-test-fixture <!nocheck>, ros-lyrical-rcpputils, ros-lyrical-rcutils, ros-lyrical-rmw, ros-lyrical-rmw-connextdds, ros-lyrical-rmw-cyclonedds-cpp, ros-lyrical-rmw-fastrtps-cpp, ros-lyrical-rmw-fastrtps-dynamic-cpp, ros-lyrical-rmw-implementation-cmake, ros-lyrical-rmw-zenoh-cpp, ros-lyrical-ros-workspace
+Homepage: https://index.ros.org/p/rmw_implementation/#lyrical
+Standards-Version: 3.9.2
+
+Package: ros-lyrical-rmw-implementation
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-lyrical-ament-index-cpp, ros-lyrical-rcpputils, ros-lyrical-rcutils, ros-lyrical-rmw-implementation-cmake, ros-lyrical-ros-workspace, ros-lyrical-rmw-fastrtps-cpp | ros-lyrical-rmw-cyclonedds-cpp | ros-lyrical-rmw-connextdds
+Description: Proxy implementation of the ROS 2 Middleware Interface.
