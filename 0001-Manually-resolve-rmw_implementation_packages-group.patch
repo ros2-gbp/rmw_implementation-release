@@ -1,0 +1,63 @@
+From 39f1f484640a9fdc58f2990b1400d04b587f7792 Mon Sep 17 00:00:00 2001
+From: Scott K Logan <logans@cottsay.net>
+Date: Fri, 24 Apr 2026 16:08:34 -0500
+Subject: [PATCH] Manually resolve rmw_implementation_packages group
+
+---
+ rpm/ros-rolling-rmw-implementation.spec | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/rpm/ros-rolling-rmw-implementation.spec b/rpm/ros-rolling-rmw-implementation.spec
+index 9829f8c25df5..f3014b1a8e91 100644
+--- a/rpm/ros-rolling-rmw-implementation.spec
++++ b/rpm/ros-rolling-rmw-implementation.spec
+@@ -1,6 +1,7 @@
+ %{?!ros_distro:%global ros_distro rolling}
+ %global pkg_name rmw_implementation
+ %global normalized_pkg_name %{lua:return (string.gsub(rpm.expand('%{pkg_name}'), '_', '-'))}
++%global _bloom_disable_groups 1
+ 
+ Name:           ros-rolling-rmw-implementation
+ Version:        3.1.5
+@@ -13,6 +14,11 @@ Source0:        %{name}-%{version}.tar.gz
+ BuildRequires:  bloom-rpm-macros
+ BuildRequires:  cmake
+ 
++# We need more than one RMW present to build this package
++# Choose the default and one other
++BuildRequires:  ros-%{ros_distro}(rmw_fastrtps_cpp)(devel)
++BuildRequires:  ros-%{ros_distro}(rmw_fastrtps_dynamic_cpp)(devel)
++
+ %{?bloom_package}
+ 
+ %description
+@@ -25,6 +31,8 @@ Summary:        %{summary}
+ Provides:       %{name} = %{version}-%{release}
+ Provides:       %{name}%{?_isa} = %{version}-%{release}
+ Requires:       %{name}-runtime%{?_isa} = %{version}-%{release}
++Suggests:       ros-%{ros_distro}(rmw_fastrtps_cpp)(devel)
++Requires:       ros-%{ros_distro}(rmw_implementation_packages)(devel)(member)
+ 
+ %description devel
+ Proxy implementation of the ROS 2 Middleware Interface.
+@@ -33,6 +41,8 @@ Proxy implementation of the ROS 2 Middleware Interface.
+ %package runtime
+ Release:        %{release}
+ Summary:        %{summary}
++Suggests:       ros-%{ros_distro}(rmw_fastrtps_cpp)
++Requires:       ros-%{ros_distro}(rmw_implementation_packages)(member)
+ 
+ %description runtime
+ Proxy implementation of the ROS 2 Middleware Interface.
+@@ -43,7 +53,7 @@ Proxy implementation of the ROS 2 Middleware Interface.
+ 
+ 
+ %generate_buildrequires
+-%bloom_buildrequires
++%bloom_buildrequires -g
+ 
+ 
+ %build
+-- 
+2.53.0
+
