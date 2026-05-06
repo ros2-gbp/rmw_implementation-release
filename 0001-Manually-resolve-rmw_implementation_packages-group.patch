@@ -8,7 +8,7 @@ Subject: [PATCH] Manually resolve rmw_implementation_packages group
  1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/rpm/ros-rolling-rmw-implementation.spec b/rpm/ros-rolling-rmw-implementation.spec
-index 9829f8c25df5..f3014b1a8e91 100644
+index 9829f8c..f3014b1 100644
 --- a/rpm/ros-rolling-rmw-implementation.spec
 +++ b/rpm/ros-rolling-rmw-implementation.spec
 @@ -1,6 +1,7 @@
