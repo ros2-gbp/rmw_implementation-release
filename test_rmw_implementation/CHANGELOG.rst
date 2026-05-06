@@ -2,6 +2,9 @@
 Changelog for package test_rmw_implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.2.0 (2026-05-06)
+------------------
+
 3.1.5 (2026-04-09)
 ------------------
 * Use new aggregate rosidl target instead of _TARGETS (`#276 <https://github.com/ros2/rmw_implementation/issues/276>`_)
