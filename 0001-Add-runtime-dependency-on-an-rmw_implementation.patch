@@ -1,4 +1,4 @@
-From 25a6e204d6452288d3545faca3d7c19780670100 Mon Sep 17 00:00:00 2001
+From d3b580af59bbd4164c18eccda7379b6e5892c146 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Steven!=20Ragnar=C3=B6k?=
  <nuclearsandwich@users.noreply.github.com>
 Date: Sat, 12 Feb 2022 10:57:14 -0500
@@ -22,5 +22,5 @@ index 6d7b65c..0113f9f 100644
  @[if Replaces]Replaces: @(', '.join(Replaces))@\n@[end if]@
  Description: @(Description)
 -- 
-2.53.0
+2.43.0
 
