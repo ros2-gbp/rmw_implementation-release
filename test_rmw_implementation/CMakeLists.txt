@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.20)
 
 project(test_rmw_implementation)
 
+# Default to C++17
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -10,7 +16,6 @@ find_package(ament_cmake REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_ros REQUIRED)
-  find_package(ament_cmake_ros_core REQUIRED)
   find_package(ament_cmake_gtest REQUIRED)
   find_package(osrf_testing_tools_cpp REQUIRED)
 
@@ -30,7 +35,6 @@ if(BUILD_TESTING)
     test/test_init_shutdown.cpp
   )
   target_link_libraries(test_init_shutdown
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -41,7 +45,6 @@ if(BUILD_TESTING)
     test/test_init_options.cpp
   )
   target_link_libraries(test_init_options
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -52,7 +55,6 @@ if(BUILD_TESTING)
     test/test_create_destroy_node.cpp
   )
   target_link_libraries(test_create_destroy_node
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -63,7 +65,6 @@ if(BUILD_TESTING)
     test/test_publisher.cpp
   )
   target_link_libraries(test_publisher
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -75,7 +76,6 @@ if(BUILD_TESTING)
     test/test_subscription.cpp
   )
   target_link_libraries(test_subscription
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -88,7 +88,6 @@ if(BUILD_TESTING)
     test/test_serialize_deserialize.cpp
   )
   target_link_libraries(test_serialize_deserialize
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -101,7 +100,6 @@ if(BUILD_TESTING)
     test/test_publisher_allocator.cpp
   )
   target_link_libraries(test_publisher_allocator
-    ament_cmake_ros_core::ament_ros_defaults
     rmw::rmw
     rmw_implementation::rmw_implementation
   )
@@ -110,7 +108,6 @@ if(BUILD_TESTING)
     test/test_subscription_allocator.cpp
   )
   target_link_libraries(test_subscription_allocator
-    ament_cmake_ros_core::ament_ros_defaults
     rmw::rmw
     rmw_implementation::rmw_implementation
   )
@@ -119,7 +116,6 @@ if(BUILD_TESTING)
     test/test_wait_set.cpp
   )
   target_link_libraries(test_wait_set
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -131,7 +127,6 @@ if(BUILD_TESTING)
     test/test_graph_api.cpp
   )
   target_link_libraries(test_graph_api
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -143,7 +138,6 @@ if(BUILD_TESTING)
     test/test_unique_identifiers.cpp
   )
   target_link_libraries(test_unique_identifiers
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -155,7 +149,6 @@ if(BUILD_TESTING)
     test/test_service.cpp
   )
   target_link_libraries(test_service
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -167,7 +160,6 @@ if(BUILD_TESTING)
     test/test_client.cpp
   )
   target_link_libraries(test_client
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -179,7 +171,6 @@ if(BUILD_TESTING)
     test/test_qos_profile_check_compatible.cpp
   )
   target_link_libraries(test_qos_profile_check_compatible
-    ament_cmake_ros_core::ament_ros_defaults
     rmw::rmw
     rmw_implementation::rmw_implementation
   )
@@ -188,7 +179,6 @@ if(BUILD_TESTING)
     test/test_duration_infinite.cpp
   )
   target_link_libraries(test_duration_infinite
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rcutils::rcutils
     rmw::rmw
@@ -200,7 +190,6 @@ if(BUILD_TESTING)
     test/test_event.cpp
   )
   target_link_libraries(test_event
-    ament_cmake_ros_core::ament_ros_defaults
     osrf_testing_tools_cpp::memory_tools
     rmw::rmw
     rmw_implementation::rmw_implementation

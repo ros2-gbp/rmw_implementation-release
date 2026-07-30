@@ -2,14 +2,10 @@
 Changelog for package test_rmw_implementation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-3.2.1 (2026-07-30)
+3.1.6 (2026-07-30)
 ------------------
-* Add regression test for unread subscription readiness across waits (`#282 <https://github.com/ros2/rmw_implementation/issues/282>`_)
-* use C++ 20 in default. (`#279 <https://github.com/ros2/rmw_implementation/issues/279>`_)
-* Contributors: CY Chen, Tomoya Fujita
-
-3.2.0 (2026-05-06)
-------------------
+* Add regression test for unread subscription readiness across waits (`#282 <https://github.com/ros2/rmw_implementation/issues/282>`_) (`#284 <https://github.com/ros2/rmw_implementation/issues/284>`_)
+* Contributors: mergify[bot]
 
 3.1.5 (2026-04-09)
 ------------------
