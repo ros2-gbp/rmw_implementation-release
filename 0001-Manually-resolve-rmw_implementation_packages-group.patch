@@ -1,4 +1,4 @@
-From 39f1f484640a9fdc58f2990b1400d04b587f7792 Mon Sep 17 00:00:00 2001
+From 9136e990ae3705eac3ffbbc4dfd9a50a63176554 Mon Sep 17 00:00:00 2001
 From: Scott K Logan <logans@cottsay.net>
 Date: Fri, 24 Apr 2026 16:08:34 -0500
 Subject: [PATCH] Manually resolve rmw_implementation_packages group
@@ -8,7 +8,7 @@ Subject: [PATCH] Manually resolve rmw_implementation_packages group
  1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/rpm/ros-rolling-rmw-implementation.spec b/rpm/ros-rolling-rmw-implementation.spec
-index 9829f8c..f3014b1 100644
+index 2d04381..2673c24 100644
 --- a/rpm/ros-rolling-rmw-implementation.spec
 +++ b/rpm/ros-rolling-rmw-implementation.spec
 @@ -1,6 +1,7 @@
@@ -18,7 +18,7 @@ index 9829f8c..f3014b1 100644
 +%global _bloom_disable_groups 1
  
  Name:           ros-rolling-rmw-implementation
- Version:        3.1.5
+ Version:        3.2.0
 @@ -13,6 +14,11 @@ Source0:        %{name}-%{version}.tar.gz
  BuildRequires:  bloom-rpm-macros
  BuildRequires:  cmake
@@ -59,5 +59,5 @@ index 9829f8c..f3014b1 100644
  
  %build
 -- 
-2.53.0
+2.43.0
 
